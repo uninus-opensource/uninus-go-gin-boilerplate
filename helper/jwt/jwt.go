@@ -1,12 +1,13 @@
 package jwt
 
 import (
-	"github.com/golang-jwt/jwt"
 	"time"
+
+	"github.com/golang-jwt/jwt"
 )
 
 type IJwt interface {
-	GenerateJWT(userID int, email, role string) (string, error)
+	GenerateJWT(userID string, email string) (string, error)
 	ValidateToken(tokenString string) (*jwt.Token, error)
 }
 
@@ -20,11 +21,11 @@ func NewJWT(secret string) IJwt {
 	}
 }
 
-func (j *JWT) GenerateJWT(userID int, email, role string) (string, error) {
+func (j *JWT) GenerateJWT(userID string, email string) (string, error) {
 	claims := jwt.MapClaims{
-		"id": userID,
-		"email":   email,
-		"exp":     time.Now().Add(time.Hour * 12).Unix(),
+		"id":    userID,
+		"email": email,
+		"exp":   time.Now().Add(time.Hour * 12).Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

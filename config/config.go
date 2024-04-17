@@ -12,6 +12,7 @@ type APPConfig struct {
 	AppPort int
 	DBConf  DBConfig
 	RdsConf RedisConfig
+	Secret  string
 }
 
 type DBConfig struct {
@@ -46,6 +47,10 @@ func loadConfig() *APPConfig {
 			return nil
 		}
 		res.AppPort = port
+	}
+
+	if v, f := os.LookupEnv("SECRET"); f {
+		res.Secret = v
 	}
 
 	if value, found := os.LookupEnv("DBHOST"); found {
